@@ -51,10 +51,10 @@ def scan_directory(path, recursive=False):
                     init_search_and_download(file_path)
     else:
         for file_name in os.listdir(path):
-            absolute_path = os.path.join(path, file_name)
-            if utils.is_allowed_file_type(absolute_path):
+            file_path = os.path.join(path, file_name)
+            if utils.is_allowed_file_type(file_path):
                 found_files = True
-                init_search_and_download(absolute_path)
+                init_search_and_download(file_path)
     if not found_files:
         print(' - No supported video files found in \'{0}\''.format(path))
 
