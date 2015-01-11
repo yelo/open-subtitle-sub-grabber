@@ -1,7 +1,6 @@
 # utils.py
 # Simple utility class
 # -*- coding: utf-8 -*-
-
 import mimetypes
 import os
 

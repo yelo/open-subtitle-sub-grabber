@@ -1,6 +1,5 @@
 # file_info.py
 # -*- coding: utf-8 -*-
-
 import os
 import struct
 
@@ -52,5 +51,5 @@ class FileInfo(object):
             return "IOError"
 
     def __str__(self):
-        return "FileInfo -> path: {0} | size: {1} | hash: {2} "\
+        return "FileInfo -> path: {0} | size: {1} | hash: {2}" \
             .format(self.path, self.size, self.hash)

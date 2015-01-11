@@ -4,12 +4,12 @@
 # same API that media player classic does.
 #
 # -*- coding: utf-8 -*-
-
 from __future__ import print_function
-from modules import file_info, utils, osparser
-
 import argparse
 import os
+
+from modules import file_info, utils, open_subtitles_parser
+
 
 arg_parser = argparse.ArgumentParser(description='Let\'s grab a subtitle -- an easy'
                                                  ' to use command line subtitle '
@@ -64,7 +64,7 @@ def init_search_and_download(file_path):
     :param file_path: The path to the file we want to download a subtitle for
     """
     fi = file_info.FileInfo(file_path)
-    sub_parser = osparser.OpenSubtitlesParser(fi)
+    sub_parser = open_subtitles_parser.OpenSubtitlesParser(fi)
 
     if sub_parser.grab_subtitle():
         print(' + Subtitle successfully downloaded for \'{0}\''.format(fi.name))

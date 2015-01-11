@@ -1,9 +1,9 @@
-# osparser.py
+# open_subtitles_parser.py
 # -*- coding: utf-8 -*-
-
 import urllib2
+
+from . import utils
 import settings
-import utils
 
 
 class OpenSubtitlesParser(object):
@@ -14,10 +14,9 @@ class OpenSubtitlesParser(object):
     """
     def __init__(self, file_info):
         self.file_info = file_info
-        self.subtitle_url = settings.BASE_URL.format(file_info.size, file_info.hash)
-        self.subtitle_list = urllib2.urlopen(self.subtitle_url).read()
-        self.ticket = ''
-        
+        self.formatted_url = settings.BASE_URL.format(file_info.size, file_info.hash)
+        self.subtitle_list = urllib2.urlopen(self.formatted_url).read()
+        self.ticket = str()
         self.parsed_data = {}
 
     def parse_data(self):
@@ -45,15 +44,19 @@ class OpenSubtitlesParser(object):
             for sub in sub_list[pos]:
                 self.parsed_data[pos][sub.split('=')[0]] = sub.split('=')[1]
 
-    def grab_subtitle(self):
+    def grab_subtitle(self, language=settings.ISO639):
         """ This method will download the first found subtitle matching the value
         of settings.ISO639, default is 'en'.
         """
         self.parse_data()
         for nr in range(len(self.parsed_data)):
-            if self.parsed_data[nr]['iso639_2'] == settings.ISO639:
+            if self.parsed_data[nr]['iso639_2'] == language:
                 sub = urllib2.urlopen((settings.DL_URL.format(
                     self.parsed_data[nr]['subtitle'], self.ticket)))
                 utils.download_subtitle(self.file_info, sub.read())
                 return True
         return False
+
+    def __str__(self):
+        return "OpenSubtitlesParser -> formatted_url: {0}" \
+            .format(self.formatted_url)
