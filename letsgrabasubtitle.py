@@ -42,13 +42,19 @@ def scan_directory(path, recursive=False):
     :param recursive: True if the scan should be recursive.
     """
     found_files = False
-    for file_name in os.listdir(path):
-        absolute_path = os.path.join(path, file_name)
-        if recursive and os.path.isdir(absolute_path):
-            scan_directory(os.path.normpath(absolute_path), recursive)
-        if utils.is_allowed_file_type(absolute_path):
-            found_files = True
-            init_search_and_download(absolute_path)
+    if recursive:
+        for root, sub_folders, files in os.walk(args.path):
+            for file_name in files:
+                path = os.path.join(root, file_name)
+                if utils.is_allowed_file_type(path):
+                    found_files = True
+                    init_search_and_download(path)
+    else:
+        for file_name in os.listdir(path):
+            absolute_path = os.path.join(path, file_name)
+            if utils.is_allowed_file_type(absolute_path):
+                found_files = True
+                init_search_and_download(absolute_path)
     if not found_files:
         print(' - No supported video files found in \'{0}\''.format(path))
 
