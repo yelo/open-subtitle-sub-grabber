@@ -45,10 +45,10 @@ def scan_directory(path, recursive=False):
     if recursive:
         for root, sub_folders, files in os.walk(args.path):
             for file_name in files:
-                path = os.path.join(root, file_name)
-                if utils.is_allowed_file_type(path):
+                file_path = os.path.join(root, file_name)
+                if utils.is_allowed_file_type(file_path):
                     found_files = True
-                    init_search_and_download(path)
+                    init_search_and_download(file_path)
     else:
         for file_name in os.listdir(path):
             absolute_path = os.path.join(path, file_name)
