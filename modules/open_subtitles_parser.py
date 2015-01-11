@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 import urllib2
 
-from . import utils
-import settings
+from . import utils, settings
 
 
 class OpenSubtitlesParser(object):
