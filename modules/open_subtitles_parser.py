@@ -14,7 +14,9 @@ class OpenSubtitlesParser(object):
     def __init__(self, file_info):
         self.file_info = file_info
         self.formatted_url = settings.BASE_URL.format(file_info.size, file_info.hash)
-        self.subtitle_list = urllib2.urlopen(self.formatted_url).read()
+        self.headers = { 'User-Agent' : 'Mozilla/5.0' }
+        self.request = urllib2.Request(self.formatted_url, None, self.headers)
+        self.subtitle_list = urllib2.urlopen(self.request).read()
         self.ticket = str()
         self.parsed_data = {}
 
@@ -50,8 +52,11 @@ class OpenSubtitlesParser(object):
         self.parse_data()
         for nr in range(len(self.parsed_data)):
             if self.parsed_data[nr]['iso639_2'] == language:
-                sub = urllib2.urlopen((settings.DL_URL.format(
-                    self.parsed_data[nr]['subtitle'], self.ticket)))
+                dl_url = settings.DL_URL.format(
+                        self.parsed_data[nr]['subtitle'],
+                        self.ticket)
+                request = urllib2.Request(dl_url, None, self.headers)
+                sub = urllib2.urlopen(request)
                 utils.download_subtitle(self.file_info, sub.read())
                 return True
         return False
