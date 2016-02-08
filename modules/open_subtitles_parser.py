@@ -13,10 +13,9 @@ class OpenSubtitlesParser(object):
     """
     def __init__(self, file_info):
         self.file_info = file_info
-        self.formatted_url = settings.BASE_URL.format(file_info.size, file_info.hash)
-        self.headers = { 'User-Agent' : 'Mozilla/5.0' }
-        self.request = urllib2.Request(self.formatted_url, None, self.headers)
-        self.subtitle_list = urllib2.urlopen(self.request).read()
+        formatted_url = settings.BASE_URL.format(file_info.size, file_info.hash)
+        request = urllib2.Request(formatted_url, None, settings.USER_AGENT)
+        self.subtitle_list = urllib2.urlopen(request).read()
         self.ticket = str()
         self.parsed_data = {}
 
@@ -55,7 +54,7 @@ class OpenSubtitlesParser(object):
                 dl_url = settings.DL_URL.format(
                         self.parsed_data[nr]['subtitle'],
                         self.ticket)
-                request = urllib2.Request(dl_url, None, self.headers)
+                request = urllib2.Request(dl_url, None, settings.USER_AGENT)
                 sub = urllib2.urlopen(request)
                 utils.download_subtitle(self.file_info, sub.read())
                 return True
