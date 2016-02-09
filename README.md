@@ -7,8 +7,8 @@ for VLC which should download subtitles, but I never got
 it to work. So I created this.
 
 ### Tested on
-* OS X Yosemite
-* Windows 8.1
+* OS X
+* Windows
 
 I guess it should work on various linux and bsd flavours too.
 
